@@ -152,8 +152,12 @@ export const generateTestQuestions = async ({
       throw new Error("Липсва валиден API ключ в системата на Render.");
     }
 
-    // Създаваме връзката наново при всяка заявка (с подсигурен ключ)
-    const ai = new GoogleGenAI({ apiKey: apiKey.trim() });
+    // === 🌟 ТУК Е КОРИГИРАНИЯТ И СИГУРЕН НАЧИН ЗА ДЕПЛОЙМЪНТ В ЕВРОПА 🌟 ===
+    const ai = new GoogleGenAI({
+      apiKey: apiKey.trim(),
+      // Изрично указваме на SDK-то да ползва стабилния и разрешен endpoint за външни приложения
+      baseUrl: "https://generativelanguage.googleapis.com",
+    });
     // =============================================
 
     // Твоята JSON схема си остава същата
