@@ -12,9 +12,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // 2. Глобални Middleware-и за сигурност и парсване
+const cors = require("cors");
+
+// Сложи твоя Vercel URL тук, за да разрешиш достъпа
 app.use(
   cors({
-    origin: "http://localhost:5173", // Позволява достъп само на твоя React фронтенд (Vite)
+    origin: "https://test-generator-xi.vercel.app/", // ТУК СЛАГАШ ЛИНКА ОТ VERCEL
     credentials: true,
   }),
 );
