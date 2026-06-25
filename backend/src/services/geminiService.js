@@ -3,7 +3,23 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Логваме дължината на ключа в Render конзолата, за да сме сигурни, че се чете
+console.log(
+  "ℹ️ Проверка на ключа при стартиране. Дължина:",
+  process.env.GEMINI_API_KEY
+    ? process.env.GEMINI_API_KEY.length
+    : "ПРАЗЕН (undefined)",
+);
+
+// Новото SDK изисква обекта с apiKey да бъде подаден точно така.
+// Ако процесът в Render по някаква причина не го намери, хвърляме грешка веднага.
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error(
+    "❌ КРИТИЧНО: Липсва GEMINI_API_KEY в системните променливи на Render!",
+  );
+}
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY.trim() }); // .trim() чисти скрити интервали!
 
 export const generateTestQuestions = async ({
   subject,
