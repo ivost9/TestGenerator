@@ -18,11 +18,17 @@ export const createTest = async (req, res) => {
         .json({ status: "error", message: "Всички полета са задължителни!" });
     }
 
-    const user = await User.findById(req.user.userId);
+    // === 🌟 СМЕНЯМЕ НА let ТУК, ЗА ДА МОЖЕ ДА СЕ ПРЕЗАПИСВА 🌟 ===
+    let user = await User.findById(req.user.userId);
+
+    // Ако потребителят липсва (и искаш да създадеш служебен)
     if (!user) {
-      return res
-        .status(44)
-        .json({ status: "error", message: "Потребителят не съществува." });
+      user = await User.create({
+        email: "test_teacher@School.bg",
+        passwordHash: "dummyhash123",
+        credits: 5,
+      });
+      console.log("👤 Създаден е служебен тестов учител в базата данни.");
     }
 
     // 3. Проверка за налични кредити
@@ -30,25 +36,6 @@ export const createTest = async (req, res) => {
       return res.status(403).json({
         status: "error",
         message: "Нямате оставащи кредити!",
-      });
-    }
-
-    // Ако базата е напълно празна и няма нито един потребител, създаваме един тестов служебно
-    if (!user) {
-      user = await User.create({
-        email: "test_teacher@School.bg",
-        passwordHash: "dummyhash123", // Временно
-        credits: 5,
-      });
-      console.log("👤 Създаден е служебен тестов учител в базата данни.");
-    }
-
-    // 3. Проверка за налични кредити
-    if (user.credits <= 0) {
-      return res.status(403).json({
-        status: "error",
-        message:
-          "Нямате достатъчно кредити! Моля, преминете към Premium или купете пакети.",
       });
     }
 
@@ -85,9 +72,8 @@ export const createTest = async (req, res) => {
       test: newTest,
     });
   } catch (error) {
-    console.error("❌ Грешка в testController:", error.message);
+    console.error("❌ ПЪЛНА ГРЕШКА В testController:", error); // Сложи го така, за да виждаш всичко в Render logs
 
-    // Ако грешката идва от нашата валидация, връщаме статус 400 с точното съобщение на Gemini
     return res.status(400).json({
       status: "error",
       message: error.message,
