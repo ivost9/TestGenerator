@@ -142,22 +142,17 @@ export const generateTestQuestions = async ({
   count = 10,
 }) => {
   try {
-    // === 🛠️ ИНИЦИАЛИЗИРАМЕ КЛЮЧА ДИНАМИЧНО ТУК ===
-    const apiKey = process.env.GEMINI_API_KEY;
+    // 1. Уверяваме се, че dotenv е заредил (за локални тестове)
+    // В Render тази променлива process.env.GEMINI_API_KEY идва директно от таблото им
 
-    if (!apiKey) {
-      console.error(
-        "❌ ГРЕШКА ПРИ ИЗПЪЛНЕНИЕ: БЕКЕНДЪТ НЕ ИДЕНТИФИЦИРА КЛЮЧА!",
-      );
-      throw new Error("Липсва валиден API ключ в системата на Render.");
+    if (!process.env.GEMINI_API_KEY) {
+      console.error("❌ КРИТИЧНО: Render не подава GEMINI_API_KEY!");
+      throw new Error("Липсва API ключ в системната среда.");
     }
 
-    // === 🌟 ТУК Е КОРИГИРАНИЯТ И СИГУРЕН НАЧИН ЗА ДЕПЛОЙМЪНТ В ЕВРОПА 🌟 ===
-    const ai = new GoogleGenAI({
-      apiKey: apiKey.trim(),
-      // Изрично указваме на SDK-то да ползва стабилния и разрешен endpoint за външни приложения
-      baseUrl: "https://generativelanguage.googleapis.com",
-    });
+    // === 🌟 СИНТАКСИС ЗА НОВОТО SDK (@google/genai) 🌟 ===
+    // Просто викаме празен конструктор. Библиотеката сама взима process.env.GEMINI_API_KEY
+    const ai = new GoogleGenAI();
     // =============================================
 
     // Твоята JSON схема си остава същата
