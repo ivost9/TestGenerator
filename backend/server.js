@@ -12,7 +12,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // 2. Глобални Middleware-и за сигурност и парсване
-const cors = require("cors");
 
 // Сложи твоя Vercel URL тук, за да разрешиш достъпа
 app.use(
