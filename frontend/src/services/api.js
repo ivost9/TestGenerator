@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Създаваме инстанция на axios с базов URL адреса на нашия Express сървър
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL:
+    "https://testgenerator-2yr0.onrender.com" || "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
   },

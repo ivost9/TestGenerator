@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 // Сложи твоя Vercel URL тук, за да разрешиш достъпа
 app.use(
   cors({
-    origin: "https://test-generator-xi.vercel.app/", // ТУК СЛАГАШ ЛИНКА ОТ VERCEL
+    origin: "https://test-generator-xi.vercel.app", // ТУК СЛАГАШ ЛИНКА ОТ VERCEL
     credentials: true,
   }),
 );
